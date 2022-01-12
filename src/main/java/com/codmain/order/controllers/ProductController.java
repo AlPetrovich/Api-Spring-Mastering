@@ -5,13 +5,15 @@ import com.codmain.order.dtos.ProductDTO;
 import com.codmain.order.entity.Product;
 import com.codmain.order.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 public class ProductController {
@@ -23,8 +25,14 @@ public class ProductController {
 
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> findAll(){
-        List<Product> products =productService.findAll();
+    public ResponseEntity<List<ProductDTO>> findAll(
+            @RequestParam(value = "pageNumber",required = false,defaultValue ="0") int pageNumber,
+            @RequestParam(value = "pageSize", required = false, defaultValue ="3") int pageSize
+    ){
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+
+
+        List<Product> products =productService.findAll(page);
         List<ProductDTO> productDTOS= converter.fromEntity(products);
         return new ResponseEntity<List<ProductDTO>>(productDTOS,HttpStatus.OK);
     }
