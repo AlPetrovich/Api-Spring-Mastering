@@ -12,4 +12,6 @@ public class ProductDTO {
     private Long id;
     private String name;
     private Double price;
+    private Double priceCost;
+    private Double supplier;
 }
