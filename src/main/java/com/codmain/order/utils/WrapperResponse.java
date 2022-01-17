@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class WrapperResponse<T> {
 
+    private boolean ok;
     private String message;
     private T body;
 }

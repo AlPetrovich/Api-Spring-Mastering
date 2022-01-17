@@ -19,28 +19,28 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> all(Exception e, WebRequest request){
         log.error(e.getMessage(), e);
-        WrapperResponse<?> response = new WrapperResponse<>("Internal Server Error", null);
+        WrapperResponse<?> response = new WrapperResponse<>(false ,"Internal Server Error", null);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ValidateServiceException.class)
     public ResponseEntity<?> validateServiceException(ValidateServiceException e, WebRequest request){
         log.info(e.getMessage(), e);
-        WrapperResponse<?> response = new WrapperResponse<>(e.getMessage(), null);
+        WrapperResponse<?> response = new WrapperResponse<>(false ,e.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NoDataFoundException.class)
     public ResponseEntity<?> noDataFoundException(NoDataFoundException e, WebRequest request){
         log.info(e.getMessage(), e);
-        WrapperResponse<?> response = new WrapperResponse<>(e.getMessage(), null);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        WrapperResponse<?> response = new WrapperResponse<>(false ,e.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(GeneralServiceException.class)
     public ResponseEntity<?> generalServiceException(GeneralServiceException e, WebRequest request){
         log.error(e.getMessage(), e);
-        WrapperResponse<?> response = new WrapperResponse<>(e.getMessage(), null);
+        WrapperResponse<?> response = new WrapperResponse<>(false ,e.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

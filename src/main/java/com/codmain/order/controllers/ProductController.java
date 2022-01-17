@@ -4,6 +4,7 @@ import com.codmain.order.converters.ProductConverter;
 import com.codmain.order.dtos.ProductDTO;
 import com.codmain.order.entity.Product;
 import com.codmain.order.services.ProductService;
+import com.codmain.order.utils.WrapperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,10 +39,13 @@ public class ProductController {
     }
 
     @GetMapping("/products/{productId}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable("productId") Long productId){
+    public ResponseEntity<WrapperResponse<ProductDTO>> findById(@PathVariable("productId") Long productId){
         Product product = productService.findById(productId);
         ProductDTO productDTO = converter.fromEntity(product);
-        return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
+
+        WrapperResponse<ProductDTO> response= new WrapperResponse<>(true,"success",productDTO);
+
+        return new ResponseEntity<WrapperResponse<ProductDTO>>(response, HttpStatus.OK);
     }
 
 
