@@ -32,20 +32,19 @@ public class ProductController {
     ){
         Pageable page = PageRequest.of(pageNumber, pageSize);
 
-
         List<Product> products =productService.findAll(page);
         List<ProductDTO> productDTOS= converter.fromEntity(products);
-        return new ResponseEntity<List<ProductDTO>>(productDTOS,HttpStatus.OK);
+        return new WrapperResponse(true,"success",productDTOS)
+                .createResponse(HttpStatus.OK);
+
     }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<WrapperResponse<ProductDTO>> findById(@PathVariable("productId") Long productId){
         Product product = productService.findById(productId);
         ProductDTO productDTO = converter.fromEntity(product);
-
-        WrapperResponse<ProductDTO> response= new WrapperResponse<>(true,"success",productDTO);
-
-        return new ResponseEntity<WrapperResponse<ProductDTO>>(response, HttpStatus.OK);
+        return new WrapperResponse<ProductDTO>(true,"success",productDTO)
+                .createResponse(HttpStatus.OK);
     }
 
 
@@ -54,19 +53,24 @@ public class ProductController {
 
         Product newProduct = productService.save(converter.fromDTO(product));
         ProductDTO productDTO = converter.fromEntity(newProduct);
-        return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.CREATED);
+        return new WrapperResponse(true,"success",productDTO)
+                .createResponse(HttpStatus.CREATED);
+
     }
 
     @PutMapping("/products")
     public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO product){
         Product productUpdate = productService.save(converter.fromDTO(product));
         ProductDTO productDTO = converter.fromEntity(productUpdate);
-        return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
+        return new WrapperResponse(true,"success",productDTO)
+                .createResponse(HttpStatus.OK);
     }
 
     @DeleteMapping("/products/{productId}")
-    public ResponseEntity<Void> delete(@PathVariable("productId") Long productId){
+    public ResponseEntity<?> delete(@PathVariable("productId") Long productId){
        productService.delete(productId);
-       return new ResponseEntity<>(HttpStatus.OK);
+
+        return new WrapperResponse(true,"success",null)
+                .createResponse(HttpStatus.OK);
     }
 }
