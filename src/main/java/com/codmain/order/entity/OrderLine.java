@@ -1,7 +1,15 @@
 package com.codmain.order.entity;
 
-import javax.persistence.*;
+import lombok.*;
 
+import javax.persistence.*;
+import java.util.Objects;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "ORDER_LINES")
 public class OrderLine {
@@ -28,4 +36,16 @@ public class OrderLine {
     @Column(name = "TOTAL", nullable = false)
     private Double total;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrderLine)) return false;
+        OrderLine orderLine = (OrderLine) o;
+        return id.equals(orderLine.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
