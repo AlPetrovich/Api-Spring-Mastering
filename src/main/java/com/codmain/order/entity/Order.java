@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +23,7 @@ public class Order {
     @Column(name = "REG_DATE", nullable = false, updatable = false)
     private LocalDateTime regDate; //fecha de registro
 
-    @OneToMany
+    @OneToMany(mappedBy = "order")
     private List<OrderLine> lines; //caract del producto
 
     @Column(name = "TOTAL", nullable = false)
