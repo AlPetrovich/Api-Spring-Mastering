@@ -2,11 +2,14 @@ package com.codmain.order.services;
 
 import com.codmain.order.entity.Order;
 import com.codmain.order.entity.OrderLine;
+import com.codmain.order.entity.Product;
 import com.codmain.order.exceptions.GeneralServiceException;
 import com.codmain.order.exceptions.NoDataFoundException;
 import com.codmain.order.exceptions.ValidateServiceException;
 import com.codmain.order.repository.OrderLineRepository;
 import com.codmain.order.repository.OrderRepository;
+import com.codmain.order.repository.ProductRepository;
+import com.codmain.order.validators.OrderValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,8 @@ public class OrderService {
     private OrderRepository orderRepo;
     @Autowired
     private OrderLineRepository orderLineRepo;
+    @Autowired
+    private ProductRepository productRepo;
 
     public List<Order> findAll(Pageable page){
         try {
@@ -69,6 +74,18 @@ public class OrderService {
     @Transactional
     public Order save(Order order){
         try{
+            //validations
+            OrderValidator.save(order);
+            double total = 0;
+            for (OrderLine line: order.getLines()){
+                Product product =productRepo.findById(line.getProduct().getId())
+                        .orElseThrow(()-> new NoDataFoundException("No existe el producto "+ line.getProduct().getId()));
+                line.setPrice(product.getPrice());
+                line.setTotal(product.getPrice() * line.getQuantity());
+                total += line.getTotal();
+            }
+            order.setTotal(total);
+
             order.getLines().forEach(line -> line.setOrder(order) ); //las lineas no tienen estable. a que ordern pertenecen
             if(order.getId() == null){
                 //creation
