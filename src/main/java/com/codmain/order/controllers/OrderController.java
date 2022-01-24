@@ -44,16 +44,14 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<WrapperResponse<OrderDTO>> create(@RequestBody OrderDTO orderDTO){
-
-        Order newOrder = null; // orderService.save(converter.fromDTO(order))
+        Order newOrder = orderService.save(orderConverter.fromDTO(orderDTO));
         return new WrapperResponse(true, "success", orderConverter.fromEntity(newOrder))
                 .createResponse();
     }
 
     @PutMapping("/orders")
     public ResponseEntity<WrapperResponse<OrderDTO>> update(@RequestBody OrderDTO orderDTO){
-        Order newOrder = null; // orderService.update()
-
+        Order newOrder = orderService.save(orderConverter.fromDTO(orderDTO));
         return  new WrapperResponse(true, "success", orderConverter.fromEntity(newOrder))
                 .createResponse();
     }
