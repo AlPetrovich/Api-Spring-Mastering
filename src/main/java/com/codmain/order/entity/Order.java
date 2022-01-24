@@ -24,7 +24,7 @@ public class Order {
     @Column(name = "REG_DATE", nullable = false, updatable = false)
     private LocalDateTime regDate; //fecha de registro
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderLine> lines; //caract del producto
 
     @Column(name = "TOTAL", nullable = false)

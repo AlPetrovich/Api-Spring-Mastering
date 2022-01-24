@@ -18,10 +18,10 @@ public class WrapperResponse<T> {
     private T body;
 
     public ResponseEntity<WrapperResponse<T>> createResponse(){
-        return new ResponseEntity(this,HttpStatus.OK);
+        return new ResponseEntity<>(this,HttpStatus.OK);
     }
 
     public ResponseEntity<WrapperResponse<T>> createResponse(HttpStatus status){
-        return new ResponseEntity(this,status);
+        return new ResponseEntity<>(this,status);
     }
 }
