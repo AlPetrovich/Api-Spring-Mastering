@@ -15,6 +15,7 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO>{
 
     private  DateTimeFormatter dateTimeFormat;
     private ProductConverter productConverter;
+    private UserConverter userConverter;
 
 
     @Override
@@ -27,6 +28,7 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO>{
                 .lines(lines)
                 .regDate(entity.getRegDate().format(dateTimeFormat))
                 .total(entity.getTotal())
+                .userDTO(userConverter.fromEntity(entity.getUser()))
                 .build();
     }
 
@@ -39,6 +41,7 @@ public class OrderConverter extends AbstractConverter<Order, OrderDTO>{
                 .id(dto.getId())
                 .lines(lines)
                 .total(dto.getTotal())
+                .user(userConverter.fromDTO(dto.getUserDTO()))
                 .build();
 
     }

@@ -30,6 +30,10 @@ public class Order {
     @Column(name = "TOTAL", nullable = false)
     private Double total; //sumatoria
 
+    @ManyToOne
+    @JoinColumn(name = "FK_USER", updatable = false)
+    private User user;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

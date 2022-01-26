@@ -3,16 +3,19 @@ package com.codmain.order.services;
 import com.codmain.order.entity.Order;
 import com.codmain.order.entity.OrderLine;
 import com.codmain.order.entity.Product;
+import com.codmain.order.entity.User;
 import com.codmain.order.exceptions.GeneralServiceException;
 import com.codmain.order.exceptions.NoDataFoundException;
 import com.codmain.order.exceptions.ValidateServiceException;
 import com.codmain.order.repository.OrderLineRepository;
 import com.codmain.order.repository.OrderRepository;
 import com.codmain.order.repository.ProductRepository;
+import com.codmain.order.security.UserPrincipal;
 import com.codmain.order.validators.OrderValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +79,10 @@ public class OrderService {
         try{
             //validations
             OrderValidator.save(order);
+
+            //Necesito saber el usuario que esta creando la orden
+            User user = UserPrincipal.getCurrentUser();
+
             double total = 0;
             for (OrderLine line: order.getLines()){
                 Product product =productRepo.findById(line.getProduct().getId())
@@ -89,6 +96,7 @@ public class OrderService {
             order.getLines().forEach(line -> line.setOrder(order) ); //las lineas no tienen estable. a que ordern pertenecen
             if(order.getId() == null){
                 //creation
+                order.setUser(user);
                 order.setRegDate(LocalDateTime.now());
                 return orderRepo.save(order);
             }

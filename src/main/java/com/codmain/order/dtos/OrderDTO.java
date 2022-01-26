@@ -14,4 +14,5 @@ public class OrderDTO {
     private String regDate; //fecha de registro
     private List<OrderLineDTO> lines; //caract del producto
     private Double total; //sumatoria
+    private UserDTO userDTO;
 }
