@@ -91,9 +91,10 @@ public class OrderService {
                 line.setTotal(product.getPrice() * line.getQuantity());
                 total += line.getTotal();
             }
-            order.setTotal(total);
 
+            order.setTotal(total);
             order.getLines().forEach(line -> line.setOrder(order) ); //las lineas no tienen estable. a que ordern pertenecen
+
             if(order.getId() == null){
                 //creation
                 order.setUser(user);
@@ -101,6 +102,7 @@ public class OrderService {
                 return orderRepo.save(order);
             }
             //update
+
             Order savedOrder = orderRepo.findById(order.getId())
                     .orElseThrow(()-> new NoDataFoundException("La orden no existe"));
             order.setRegDate(savedOrder.getRegDate()); //con esto seteo la fecha para la actualizacion ya que no la traia
