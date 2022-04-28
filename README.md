@@ -1,8 +1,8 @@
 # Api-Spring-Mastering
 
------------- ORDER API ------------------
+#------------ ORDER API ------------------
 
-API REST creada con Spring Boot implementando el patrón MVC, con más de 35 clases! 
+#API REST creada con Spring Boot implementando el patrón MVC 
 
 Funcionalidades – Un usuario puede realizar una orden de múltiples productos, quedando registrada la fecha de la orden, éstos pertenecerán al mismo, 
 el usuario tendrá un detalle de los productos que ordenó y el precio total que debe abonar.
